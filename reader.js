@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
 import {
   getAuth,
   isSignInWithEmailLink,
@@ -12,11 +13,18 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
+import {
+  getStorage,
+  ref,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
 import { firebaseConfig } from "./firebase-config.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const status = document.getElementById("status");
 const readerArea = document.getElementById("readerArea");
@@ -31,14 +39,18 @@ async function completeMagicLinkLogin() {
       email = window.prompt("Please enter your email address again:");
     }
 
+    email = email.trim().toLowerCase();
+
     await signInWithEmailLink(auth, email, window.location.href);
     window.localStorage.removeItem("emailForSignIn");
+
     window.history.replaceState({}, document.title, "reader.html");
   }
 }
 
 async function checkAccess(user) {
   const email = user.email.toLowerCase();
+
   const accessRef = doc(db, "access", email);
   const accessSnap = await getDoc(accessRef);
 
@@ -62,14 +74,16 @@ async function checkAccess(user) {
     return;
   }
 
+  const pdfRef = ref(storage, "ChasingDreamsV02_27jul25.pdf");
+  const pdfUrl = await getDownloadURL(pdfRef);
+
   status.innerText = "";
   readerArea.style.display = "block";
 
   watermark.innerText =
     "Licensed to: " + email + " | Access valid until: " + expiryDate.toDateString();
 
-  pdfFrame.src =
-    "https://firebasestorage.googleapis.com/v0/b/uktoindia-book.firebasestorage.app/o/ChasingDreamsV02_27jul25.pdf?alt=media";
+  pdfFrame.src = pdfUrl;
 }
 
 completeMagicLinkLogin().catch((error) => {
