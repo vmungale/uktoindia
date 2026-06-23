@@ -1,7 +1,7 @@
 // Firebase configuration
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+export const firebaseConfig = {
+  apiKey: "AIzaSyCqHeYz5jKACrjBvnRF6_l__arW4d01dW0",
   authDomain: "uktoindia-book.firebaseapp.com",
   projectId: "uktoindia-book",
   storageBucket: "uktoindia-book.firebasestorage.app",
