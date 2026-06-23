@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Read Chasing Dreams</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="reader-box">
+    <h1>Chasing Dreams</h1>
+    <p id="status">Checking your access...</p>
+
+    <div id="readerArea" style="display:none;">
+      <p id="watermark"></p>
+      <iframe
+        id="pdfFrame"
+        width="100%"
+        height="800px"
+        style="border:1px solid #ccc;">
+      </iframe>
+    </div>
+
+    <p><a href="index.html">Back to home</a></p>
+  </main>
+
+  <script type="module" src="reader.js"></script>
+</body>
+</html>
